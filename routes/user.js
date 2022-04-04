@@ -23,7 +23,7 @@ user.post("/signin", async (req, res, next) => {
 user.post("/login", async (req,res,next) =>{
     const {user_mail,user_password} = req.body;
     const query = `SELECT * FROM user WHERE user_mail = '${user_mail}' AND user_password = '${user_password}';`;
-
+    const rows = await db.query(query);
     if(user_mail && user_password){
         if(rows.lenght==1){
             const token = jwt.sign({
@@ -33,7 +33,7 @@ user.post("/login", async (req,res,next) =>{
             return res.status(200).json({code:200, message: token});
         }
         else{
-            return res.status(401).json({code:401, message:"Usuario y/o contraseña incorrectos"});
+            return res.status(200).json({code:200, message:"Usuario y/o contraseña incorrectos"});
         }
     }
 });
